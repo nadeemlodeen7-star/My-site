@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dusk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14162e">
+<title>KeyForge Typing Academy</title>
+<style>
+:root,[data-theme=dusk]{--bg:#14162e;--card:#1e2142;--tx:#f1f0ff;--mut:#9a9cc8;--ac:#ffb347;--ac2:#5eead4;--ok:#5eead4;--bad:#ff6b81;--bd:#323665;--on:#1b1300}
+[data-theme=light]{--bg:#eef1f7;--card:#fff;--tx:#171a2c;--mut:#5b627d;--ac:#e8870c;--ac2:#0b8f7c;--ok:#0b8f7c;--bad:#d62f48;--bd:#d5dae8;--on:#fff}
+[data-theme=ocean]{--bg:#05222f;--card:#0a3448;--tx:#e6f7ff;--mut:#82b4c9;--ac:#38bdf8;--ac2:#fcd34d;--ok:#5eead4;--bad:#ff7a8a;--bd:#16536e;--on:#03212f}
+[data-theme=sunset]{--bg:#2b1227;--card:#40193a;--tx:#fff1ee;--mut:#dca3b8;--ac:#ff8a5b;--ac2:#f9a8d4;--ok:#fde68a;--bad:#ff5d7a;--bd:#5e2b57;--on:#2a0f10}
+[data-theme=forest]{--bg:#0f2018;--card:#173126;--tx:#eafff2;--mut:#8fc0a5;--ac:#a3e635;--ac2:#fcd34d;--ok:#86efac;--bad:#ff7b7b;--bd:#265239;--on:#12210a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;overflow-x:hidden}
+body{background:var(--bg);color:var(--tx);font:16px/1.5 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(74px + env(safe-area-inset-bottom));touch-action:manipulation;transition:background .3s}
+main{max-width:900px;margin:0 auto;padding:16px}
+h1,h2,h3{margin:.2em 0 .5em;line-height:1.2}
+p{margin:.4em 0}small,.mut{color:var(--mut)}
+.page{display:none}.page.on{display:block;animation:fi .3s}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:0 0 14px}
+.btn{background:var(--ac);color:var(--on);border:0;border-bottom:4px solid rgba(0,0,0,.35);border-radius:12px;padding:12px 20px;font:700 16px/1.2 inherit;min-height:48px;cursor:pointer;touch-action:manipulation}
+.btn:active{transform:translateY(3px);border-bottom-width:1px}
+.btn.s{background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-bottom-width:4px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row2{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.sc{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;text-align:center}
+.sc b{display:block;font-size:26px}.sc small{display:block}
+select,input[type=number]{font:16px inherit;font-family:inherit;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);min-height:44px}
+label{display:inline-flex;gap:8px;align-items:center;margin:4px 12px 4px 0}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--ac)}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.stats{display:flex;justify-content:space-between;text-align:center;gap:6px;margin-bottom:8px}
+.stats b{font-size:22px;display:block}.stats small{font-size:11px}
+.txt{position:relative;font:20px/1.8 ui-monospace,Menlo,Consolas,monospace;height:calc(3 * 1.8em);overflow:hidden;white-space:pre-wrap;color:var(--mut);padding:0 2px;cursor:text}
+.txt .ok{color:var(--ok)}.txt .bad{color:var(--bad);background:rgba(255,107,129,.22);border-radius:3px;text-decoration:underline}
+.txt .cur{background:var(--ac);color:var(--on);border-radius:3px}
+.bar{height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .4s}
+.inp{width:100%;font:16px ui-monospace,Menlo,monospace;padding:12px;border-radius:12px;border:2px solid var(--ac);background:var(--bg);color:var(--tx);resize:none;outline:none}
+.inp.err{border-color:var(--bad)}
+.msg{min-height:1.7em;margin:6px 0;color:var(--ac2);font-weight:600;font-size:14px}.msg.ready{color:var(--ok)}
+.kb{margin-top:10px;user-select:none;-webkit-user-select:none}.kb .row{display:flex;gap:3px;margin-bottom:3px}
+.k{flex:1;min-width:0;font-style:normal;text-align:center;font-size:12px;padding:6px 0;border-radius:6px;background:var(--bg);border-bottom:3px solid var(--c,var(--bd));color:var(--mut);transition:transform .1s}
+.k.w{flex:1.6}.k.sb{flex:8}.hm{text-decoration:underline;font-weight:700;color:var(--tx)}
+.k.nx{background:var(--c,var(--ac));color:#111;transform:scale(1.18);position:relative;z-index:1}
+.hands{display:flex;justify-content:center;gap:5px;margin:8px 0;align-items:flex-end}
+.fg{width:22px;height:36px;border-radius:11px;background:var(--c);opacity:.3;transition:all .15s}
+.fg:nth-child(5),.fg:nth-child(6){height:22px}.fg:nth-child(5){margin-right:16px}.fg:nth-child(3),.fg:nth-child(8){height:44px}
+.fg.nx{opacity:1;transform:translateY(-6px);box-shadow:0 0 12px var(--c)}
+.f0{--c:#f472b6}.f1{--c:#fb923c}.f2{--c:#facc15}.f3{--c:#4ade80}.f4{--c:#22d3ee}.f5{--c:#60a5fa}.f6{--c:#a78bfa}.f7{--c:#f87171}.f8{--c:#94a3b8}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;overflow-x:auto;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav button{flex:1 0 70px;background:none;border:0;color:var(--mut);padding:8px 2px;font:600 11px inherit;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;cursor:pointer}
+nav button span{font-size:20px}nav button.on{color:var(--ac)}
+@media(max-width:700px){body.typing nav,body.typing .kb,body.typing .hands{display:none}body.typing{padding-bottom:12px}}
+.badge{display:inline-block;background:var(--ac);color:var(--on);font-size:12px;font-weight:700;padding:2px 10px;border-radius:20px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.plans ul{padding-left:18px;margin:8px 0;font-size:14px}.price{font-size:30px;font-weight:800}
+.lv{display:flex;justify-content:space-between;align-items:center;gap:8px}.lv b{font-size:17px}
+.arena{position:relative;height:clamp(200px,38vh,320px);overflow:hidden;border-radius:16px;background:linear-gradient(var(--bg),var(--card));border:1px solid var(--bd);touch-action:none;margin-bottom:8px}
+.fw{position:absolute;padding:4px 10px;border-radius:10px;background:var(--card);border:2px solid var(--ac);font:600 17px ui-monospace,Menlo,monospace;white-space:nowrap}
+.rk .fw::before{content:"☄️ "}.fw.pm{background:var(--ac);color:var(--on)}
+.over{position:absolute;inset:0;background:rgba(10,10,25,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#fff;padding:12px;z-index:5}
+.hud{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px}
+.lane{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:13px}.lane .nm{width:112px;flex:none}
+.track{position:relative;flex:1;height:28px;background:var(--bg);border-radius:14px;border:1px solid var(--bd)}
+.car{position:absolute;top:0;left:0;font-size:22px;line-height:26px;transition:left .1s linear}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;text-align:left;border-bottom:1px solid var(--bd)}
+canvas{width:100%;height:160px;display:block}
+#toast{position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-200%);background:var(--card);border:2px solid var(--ac);padding:10px 16px;border-radius:14px;z-index:50;transition:transform .4s;max-width:90vw;font-weight:600}
+#toast.on{transform:translate(-50%,0)}
+.hero h1{font-size:clamp(28px,7vw,44px);letter-spacing:-.02em}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="toast" role="status"></div>
+<main>
+<section class="page on" id="p-home">
+ <div class="card hero"><h1>Type faster. Feel every key.</h1>
+  <p class="mut">Typing tests, a step-by-step academy, finger-guided keyboard and four games. Works offline. Progress is saved on this device.</p>
+  <div class="row2"><button class="btn" data-go="test">Start a typing test</button><button class="btn s" data-go="academy">Open the academy</button><button class="btn s" data-go="games">Play a game</button></div></div>
+ <div class="grid" id="hstats"></div>
+ <div class="card" style="margin-top:14px"><b id="hlv"></b><div class="bar"><i id="hbar"></i></div><small id="hxp" class="mut"></small></div>
+</section>
+
+<section class="page" id="p-test">
+ <h2>Typing test</h2>
+ <div class="card">
+  <div class="row2">
+   <label>Mode <select id="tm" aria-label="Test mode"><option value="time">Timed</option><option value="words">Word count</option><option value="sent">Sentences</option><option value="para">Paragraph</option></select></label>
+   <label id="lv">Length <select id="tv" aria-label="Test length"></select></label>
+   <label id="cw" hidden><input id="cv" type="number" min="5" max="600" value="45" aria-label="Custom seconds"> sec</label>
+  </div>
+  <div><label><input type="checkbox" id="tp">Punctuation</label><label><input type="checkbox" id="tn">Numbers</label><label><input type="checkbox" id="ta">Advanced words</label></div>
+  <div class="row2"><button class="btn" id="start">Start test</button><small class="mut" id="pb"></small></div>
+ </div>
+ <div class="card" id="tpanel" hidden></div>
+ <div id="tres"></div>
+</section>
+
+<section class="page" id="p-academy">
+ <h2>Typing academy</h2>
+ <div id="lessons"></div>
+ <div id="lview" hidden><button class="btn s" id="lback">Back to lessons</button><div class="card" style="margin-top:12px"><h3 id="lt"></h3><p id="lo" class="mut"></p><p><small id="lreq"></small></p><div id="lpanel"></div></div><div id="lres"></div></div>
+</section>
+
+<section class="page" id="p-games">
+ <h2>Typing games</h2>
+ <div id="glist" class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))"></div>
+ <div id="gwrap" hidden><button class="btn s" id="gback">All games</button><div id="gview" style="margin-top:12px"></div></div>
+</section>
+
+<section class="page" id="p-progress">
+ <h2>My progress</h2>
+ <div class="grid" id="pstats"></div>
+ <div class="card" style="margin-top:14px"><b>Speed over your last tests (WPM)</b><canvas id="pch"></canvas></div>
+ <div class="card"><b>Recent tests</b><table><tbody id="phist"></tbody></table></div>
+ <button class="btn s" data-reset>Reset my progress</button>
+</section>
+
+<section class="page" id="p-ach"><h2>Achievements</h2><div id="alist"></div></section>
+
+<section class="page" id="p-premium">
+ <h2>Premium <span class="badge">Coming Soon</span></h2>
+ <p class="mut">Premium is not available yet and nothing can be purchased. Everything below the free plan is planned.</p>
+ <div class="plans">
+  <div class="card"><b>Free</b><div class="price">$0</div><ul><li>All typing tests</li><li>Basic lessons</li><li>Selected games</li><li>Basic progress tracking</li></ul><button class="btn s" disabled>Your current plan</button></div>
+  <div class="card"><b>Monthly</b><div class="price">$3.99</div><small class="mut">per month</small><ul><li>Advanced lessons</li><li>Detailed analytics</li><li>Personalized training</li></ul><button class="btn" disabled>Coming Soon</button></div>
+  <div class="card"><b>Yearly</b> <span class="badge">Best value</span><div class="price">$29.99</div><small class="mut">per year</small><ul><li>Everything in Monthly</li><li>Exclusive games and themes</li><li>Learning reports</li></ul><button class="btn" disabled>Coming Soon</button></div>
+  <div class="card"><b>Lifetime</b><div class="price">$69.99</div><small class="mut">one time</small><ul><li>Everything in Yearly</li><li>All future updates</li></ul><button class="btn" disabled>Coming Soon</button></div>
+ </div>
+</section>
+
+<section class="page" id="p-settings">
+ <h2>Settings</h2>
+ <div class="card"><label>Theme <select id="sth"><option value="dusk">Dusk (dark)</option><option value="light">Daylight (light)</option><option value="ocean">Ocean</option><option value="sunset">Sunset</option><option value="forest">Forest</option></select></label></div>
+ <div class="card"><label>Typing sound <select id="ssn"><option value="mechanical">Mechanical keyboard</option><option value="creamy">Creamy keyboard</option><option value="soft">Soft keyboard</option><option value="typewriter">Typewriter</option><option value="bubble">Bubble keyboard</option><option value="digital">Digital keyboard</option><option value="silent">Silent</option></select></label>
+  <p>Volume</p><input type="range" id="svo" min="0" max="1" step="0.05" aria-label="Volume"><div style="margin-top:8px"><button class="btn s" id="sprev">Preview sound</button></div></div>
+ <div class="card"><label><input type="checkbox" id="skb">Show keyboard and finger guide</label></div>
+ <div class="card"><button class="btn s" data-reset>Reset my progress</button><p><small class="mut">Deletes tests, lessons, XP, achievements and game records on this device.</small></p></div>
+</section>
+</main>
+<nav aria-label="Main">
+ <button data-go="home" class="on"><span>🏠</span>Home</button><button data-go="test"><span>⌨️</span>Test</button><button data-go="academy"><span>🎓</span>Academy</button><button data-go="games"><span>🎮</span>Games</button><button data-go="progress"><span>📈</span>Progress</button><button data-go="ach"><span>🏆</span>Awards</button><button data-go="premium"><span>⭐</span>Premium</button><button data-go="settings"><span>⚙️</span>Settings</button>
+</nav>
+
+<script>
+"use strict";
+/* ===== Architecture notes (future backend) =====
+ Store   : swap localStorage for an API client here.
+ Auth    : placeholder; real login must be verified on a server.
+ Entitlements.isPremium() : must later come from server-verified payment status, never from client data. */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=c=>c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c;
+const rnd=n=>Math.floor(Math.random()*n),pk=a=>a[rnd(a.length)];
+const KEY='keyforge.v1';
+const Store={load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},save(d){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}},clear(){try{localStorage.removeItem(KEY)}catch(e){}}};
+const Auth={user:null};
+const Entitlements={isPremium(){return false}};
+const def=()=>({res:[],xp:0,tt:0,les:{},ach:{},days:[],g:{race:{p:0,w:0,b:0},rocket:{p:0,b:0,lv:0},surv:{p:0,b:0},chal:{p:0,b:0}},set:{theme:'dusk',snd:'mechanical',vol:.5,kb:true}});
+let S=def();
+(function(){const l=Store.load();if(l){const d=def();S=Object.assign(d,l);S.set=Object.assign(d.set,l.set);S.g=Object.assign(d.g,l.g)}})();
+const save=()=>Store.save(S);
+document.documentElement.dataset.theme=S.set.theme;
+
+/* ===== Sound (Web Audio, generated locally) ===== */
+let AC,mg;
+function initAudio(){try{if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.connect(AC.destination)}if(AC.state!=='running')AC.resume()}catch(e){}}
+['touchstart','touchend','mousedown','keydown','click'].forEach(e=>addEventListener(e,initAudio,{passive:true}));
+function noise(t,d,type,f,q,g){const n=AC.sampleRate*d|0,b=AC.createBuffer(1,n,AC.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);const s=AC.createBufferSource();s.buffer=b;const fl=AC.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const gn=AC.createGain();gn.gain.value=g;s.connect(fl);fl.connect(gn);gn.connect(mg);s.start(t)}
+function tone(t,f,d,type,g,f2){const o=AC.createOscillator(),gn=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);gn.gain.setValueAtTime(g,t);gn.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(gn);gn.connect(mg);o.start(t);o.stop(t+d+.03)}
+const PR={mechanical:t=>{noise(t,.03,'highpass',2500,1,.9);tone(t,160,.06,'sine',.5,70)},creamy:t=>{noise(t,.045,'lowpass',1400,.7,1);tone(t,120,.09,'sine',.6,60)},soft:t=>{noise(t,.03,'lowpass',900,.5,.5);tone(t,200,.04,'sine',.25,120)},typewriter:t=>{noise(t,.025,'bandpass',4200,2,1);tone(t,260,.05,'square',.15,120)},bubble:t=>tone(t,350+Math.random()*150,.09,'sine',.45,900),digital:t=>tone(t,900,.035,'square',.1)};
+function snd(k){if(!AC||S.set.snd==='silent')return;try{mg.gain.value=S.set.vol;const t=AC.currentTime;
+ if(k==='key')(PR[S.set.snd]||PR.mechanical)(t);
+ else if(k==='bad')tone(t,140,.14,'triangle',.5,90);
+ else if(k==='word')tone(t,880,.07,'sine',.14,1100);
+ else if(k==='win'||k==='ach')[523,659,784,1047].forEach((f,i)=>tone(t+i*.09,f,.25,'sine',.3));
+ else if(k==='hit'){noise(t,.15,'lowpass',700,1,1);tone(t,200,.15,'sawtooth',.25,50)}}catch(e){}}
+
+/* ===== Data ===== */
+const W='the be to of and a in that have it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us'.split(' ');
+const AW='accommodate necessary rhythm conscience embarrass occurrence privilege separate definitely maintenance millennium parliament questionnaire entrepreneur surveillance bureaucracy acquaintance exaggerate pronunciation unnecessary phenomenon sophisticated perseverance miscellaneous'.split(' ');
+const SENT=['The quick brown fox jumps over the lazy dog.','Practice makes progress, so keep your fingers on the home row.','A steady rhythm beats a frantic sprint every single time.','Accuracy first, then speed will follow naturally.','Good typists look at the screen, not at the keyboard.','Every expert was once a beginner who refused to quit.','Typing clearly helps you share ideas faster and with less effort.','Small daily sessions build lasting muscle memory.'];
+const PARA=['Learning to type well is a skill that pays off every day. When you keep your fingers on the home row and let each hand reach for its own keys, your speed grows without strain. Focus on accuracy, stay relaxed, and keep a steady rhythm. Soon your hands will know where every letter lives.','On 12 March, the team shipped 3 updates, fixed 47 bugs, and answered 120 support emails. Their lead, Dr. Amelia Ortiz, said: "Precision matters; speed follows." By 5:30 p.m., the report (including charts & tables) was complete, and ready for review!'];
+function gen(n,pun,num,adv){const pool=adv?AW.concat(W.slice(0,20)):W;let a=[];for(let i=0;i<n;i++){let w=pk(pool);if(num&&Math.random()<.2)w=String(10+rnd(990));a.push(w)}
+ if(pun){let c=0,L=5+rnd(5);a=a.map((w,i)=>{if(!c)w=w[0].toUpperCase()+w.slice(1);c++;if(c>=L||i===a.length-1){w+=pk(['.','.','!','?']);c=0;L=5+rnd(5)}else if(Math.random()<.15)w+=',';return w})}
+ return a.join(' ')}
+const dr=(c,n=28,mn=2,mx=5)=>Array.from({length:n},()=>Array.from({length:mn+rnd(mx-mn+1)},()=>pk(c)).join('')).join(' ');
+const LES=[
+['Beginner','Home row','Rest your fingers on A S D F and J K L ; then type without looking.',()=>dr('asdfjkl;'),90,0],
+['Beginner','Upper row','Reach up to Q W E R T Y U I O P and return home.',()=>dr('qwertyuiopasdfjkl'),90,0],
+['Beginner','Lower row','Reach down to Z X C V B N M and return home.',()=>dr('zxcvbnm,.asdfjkl'),90,0],
+['Beginner','Capital letters','Hold Shift with the pinky on the opposite hand.',()=>'The Sun Rises Over Paris. Maria And Omar Visit London In June. Kabul Is Beautiful In Spring. Tom Likes Rome.',90,0],
+['Beginner','Numbers','Reach the number row and come back to the home row.',()=>dr('1234567890',20,2,4)+' 2025 360 4815 72',90,0],
+['Intermediate','Punctuation','Use commas, periods, quotes and colons.',()=>'Hello, world. Wait; really? Yes! "Great," she said. It\'s 5:30, isn\'t it? Well-done: that\'s correct.',90,0],
+['Intermediate','Common words','Type the most frequent English words smoothly.',()=>gen(30),90,0],
+['Intermediate','Difficult words','Learn words that are easy to misspell.',()=>Array.from({length:12},()=>pk(AW)).join(' '),90,0],
+['Intermediate','Spelling patterns','Practice endings like -tion and -ough, and ie or ei.',()=>'nation station question action motion ought bought thought brought believe receive achieve weight eight height light night right might',90,0],
+['Intermediate','Full sentences','Type complete sentences with capitals and punctuation.',()=>SENT.slice().sort(()=>Math.random()-.5).slice(0,3).join(' '),90,0],
+['Advanced','Long paragraphs','Keep a steady rhythm through a full paragraph.',()=>PARA[0],92,0],
+['Advanced','Speed training','Reach at least 30 WPM with 90% accuracy.',()=>gen(40),90,30],
+['Advanced','Accuracy training','Finish with 98% accuracy or better. Slow down if needed.',()=>gen(30),98,0],
+['Advanced','Professional typing','Mix numbers, symbols and punctuation at 25 WPM or more.',()=>PARA[1],92,25]];
+
+/* ===== Helpers ===== */
+const sc=(v,l)=>`<div class="sc"><b>${v}</b><small>${l}</small></div>`;
+const fmt=s=>`${Math.floor(s/60)}m ${Math.floor(s%60)}s`;
+const maxW=()=>Math.max(0,...S.res.map(r=>r.wpm));
+const lessonsDone=()=>Object.keys(S.les).length;
+const games=()=>Object.values(S.g).reduce((a,g)=>a+g.p,0);
+const lvlOf=x=>Math.floor(Math.sqrt(x/50))+1;
+const lvInfo=x=>{const L=lvlOf(x),a=50*(L-1)*(L-1),b=50*L*L;return{L,pct:Math.round((x-a)/(b-a)*100),next:b-x}};
+function streak(){const f=i=>new Date(Date.now()-i*864e5).toLocaleDateString('en-CA');let i=S.days.includes(f(0))?0:1,n=0;while(S.days.includes(f(i))){n++;i++}return n}
+const touchDay=()=>{const d=new Date().toLocaleDateString('en-CA');if(!S.days.includes(d))S.days.push(d)};
+let tq=[],tb=0;
+function toast(m){tq.push(m);if(!tb)nt()}
+function nt(){const m=tq.shift();if(!m){tb=0;return}tb=1;const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>{t.classList.remove('on');setTimeout(nt,450)},2600)}
+const ACH=[
+['first','First Typing Test','Complete one typing test',20,()=>Math.min(1,S.res.length)],
+['w30','First 30 WPM','Reach 30 WPM in a test',30,()=>maxW()/30],
+['w50','First 50 WPM','Reach 50 WPM in a test',50,()=>maxW()/50],
+['w80','First 80 WPM','Reach 80 WPM in a test',80,()=>maxW()/80],
+['w100','First 100 WPM','Reach 100 WPM in a test',120,()=>maxW()/100],
+['perf','Perfect Accuracy','100% accuracy on a test of 20+ characters',50,()=>S.res.some(r=>r.acc===100&&r.c>=20)?1:0],
+['ten','Ten Lessons Completed','Complete 10 academy lessons',60,()=>lessonsDone()/10],
+['mara','Typing Marathon','Type for 60 minutes in total',100,()=>S.tt/3600],
+['rock','Rocket Master','Reach level 5 in Rocket Typing',80,()=>S.g.rocket.lv/5],
+['champ','Speed Champion','Finish first in a Typing Race against the computer',60,()=>S.g.race.w?1:0]];
+function checkAch(){let n=0;ACH.forEach(a=>{if(!S.ach[a[0]]&&a[4]()>=1){S.ach[a[0]]=Date.now();S.xp+=a[3];n++;toast(`🏆 ${a[1]} unlocked! +${a[3]} XP`)}});if(n){snd('ach')}save()}
+function chart(cv,data){const d=devicePixelRatio||1,w=cv.clientWidth||300,h=cv.clientHeight||160;cv.width=w*d;cv.height=h*d;const x=cv.getContext('2d');x.scale(d,d);const cs=getComputedStyle(document.documentElement),ac=cs.getPropertyValue('--ac'),mu=cs.getPropertyValue('--mut'),bd=cs.getPropertyValue('--bd');x.clearRect(0,0,w,h);x.font='11px sans-serif';x.fillStyle=mu;
+ if(data.length<2){x.fillText('Complete more tests to see your graph',10,24);return}
+ const mx=Math.max(...data,10),px=i=>28+i*(w-38)/(data.length-1),py=v=>h-18-v/mx*(h-30);x.strokeStyle=bd;x.lineWidth=1;for(let i=0;i<=3;i++){const y=py(mx*i/3);x.beginPath();x.moveTo(26,y);x.lineTo(w-6,y);x.stroke();x.fillText(Math.round(mx*i/3),2,y+4)}
+ x.strokeStyle=ac;x.lineWidth=2.5;x.lineJoin='round';x.beginPath();data.forEach((v,i)=>i?x.lineTo(px(i),py(v)):x.moveTo(px(i),py(v)));x.stroke();x.fillStyle=ac;data.forEach((v,i)=>{if(data.length<40){x.beginPath();x.arc(px(i),py(v),3,0,7);x.fill()}})}
+
+/* ===== Finger guide ===== */
+const FN=['left pinky','left ring finger','left middle finger','left index finger','right index finger','right middle finger','right ring finger','right pinky','thumb'];
+const FM={};['1qaz','2wsx','3edc','4rfv5tgb','6yhn7ujm','8ik,','9ol.','0p;/-=[]\''].forEach((s,i)=>[...s].forEach(c=>FM[c]=i));FM[' ']=8;
+const SHM={};'!1@2#3$4%5^6&7*8(9)0_-+=:;"\'<,>.?/{[}]'.match(/../g).forEach(p=>SHM[p[0]]=p[1]);
+function info(ch){let k=ch.toLowerCase(),sh=0;if(SHM[ch]){k=SHM[ch];sh=1}else if(ch!==k)sh=1;const f=FM[k];if(f===undefined)return null;
+ const sf=sh?(f<4?7:0):-1;return{k,f,sf,txt:ch===' '?'Press the Space bar with your thumb':`Press ${k.toUpperCase()} with your ${FN[f]}`+(sh?` (hold Shift with your ${f<4?'right':'left'} pinky)`:'')}}
+function buildKB(kb,hd){const R=['1234567890-=','qwertyuiop[]','asdfghjkl;\'','zxcvbnm,./'];
+ kb.innerHTML=R.map((r,i)=>`<div class="row" style="padding-left:${i*2}%">${i==3?'<i class="k w" data-k="sl">⇧</i>':''}${[...r].map(c=>`<i class="k f${FM[c]}${'fj'.includes(c)?' hm':''}" data-k="${c}">${c}</i>`).join('')}${i==3?'<i class="k w" data-k="sr">⇧</i>':''}</div>`).join('')+'<div class="row"><i class="k f8 sb" data-k=" ">space</i></div>';
+ hd.innerHTML=[0,1,2,3,8,8,4,5,6,7].map(f=>`<i class="fg f${f}" data-f="${f}"></i>`).join('')}
+
+/* ===== Typing engine (shared by tests, lessons, race) ===== */
+function panelHTML(kb){return `<div class="stats"><div><b class="lw">0</b><small>WPM</small></div><div><b class="lr">0</b><small>Raw</small></div><div><b class="la">100%</b><small>Accuracy</small></div><div><b class="lc">0/0</b><small>Right/wrong</small></div><div><b class="lt">0</b><small>Seconds</small></div></div><div class="bar"><i class="pg"></i></div><div class="txt"></div><div class="msg" aria-live="polite"></div><textarea class="inp" rows="2" placeholder="Tap here, then start typing…" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Typing input"></textarea>${kb?'<div class="hands"></div><div class="kb"></div>':''}`}
+function focusFx(inp,target){inp.addEventListener('focus',()=>{document.body.classList.add('typing');setTimeout(()=>target.scrollIntoView({block:'start',behavior:'smooth'}),400)});inp.addEventListener('blur',()=>document.body.classList.remove('typing'))}
+function Typer(root,o){
+ const T=o.text,tx=$('.txt',root),inp=$('.inp',root),msg=$('.msg',root),kb=$('.kb',root),hd=$('.hands',root);
+ let st=0,tk=0,er=0,prev=0,done=0,iv=0,smp=[],sec=0;
+ tx.innerHTML=[...T].map(c=>`<span>${esc(c)}</span>`).join('');const sp=tx.children;
+ if(kb)buildKB(kb,hd);
+ $('.lt',root).textContent=o.limit||0;
+ inp.value='';inp.disabled=false;focusFx(inp,root);tx.onclick=()=>inp.focus();
+ function calc(el){const v=inp.value;let c=0;for(let i=0;i<v.length;i++)if(v[i]===T[i])c++;return{c,w:v.length-c,wpm:Math.round(c/5/el),raw:Math.round(v.length/5/el),acc:tk?Math.round((tk-er)/tk*100):100}}
+ const el=()=>st?Math.max((Date.now()-st)/60000,1/600):1;
+ function live(){const s=calc(el()),e=el()*60;if(!st)return;$('.lw',root).textContent=s.wpm;$('.lr',root).textContent=s.raw;$('.la',root).textContent=s.acc+'%';$('.lc',root).textContent=s.c+'/'+s.w;$('.lt',root).textContent=o.limit?Math.max(0,Math.ceil(o.limit-e)):Math.round(e)}
+ function render(){const v=inp.value;let m=-1;for(let i=0;i<sp.length;i++){if(i<v.length&&v[i]!==T[i]&&m<0)m=i;const c=i<v.length?(v[i]===T[i]?'ok':'bad'):i===v.length?'cur':'';if(sp[i].className!==c)sp[i].className=c}
+  const cu=sp[Math.min(v.length,sp.length-1)],lh=parseFloat(getComputedStyle(tx).lineHeight)||36;if(cu)tx.scrollTop=Math.max(0,Math.floor(cu.offsetTop/lh)-1)*lh;
+  $('.pg',root).style.width=(v.length/T.length*100)+'%';if(kb)guide(m,v)}
+ function guide(m,v){const ch=T[m>=0?m:v.length];$$('.nx',root).forEach(e=>e.classList.remove('nx'));if(!ch){msg.textContent='';return}const n=info(ch);if(!n){msg.textContent='Type '+ch;return}
+  msg.textContent=(m>=0?'Mistake! Press Backspace, then: ':'')+n.txt;
+  const key=$$('.k',kb).find(e=>e.dataset.k===n.k);if(key)key.classList.add('nx');if(n.sf>=0){const s=$(`[data-k="${n.f<4?'sr':'sl'}"]`,kb);if(s)s.classList.add('nx')}
+  $$('.fg',hd).forEach(e=>e.classList.toggle('nx',+e.dataset.f===n.f||+e.dataset.f===n.sf))}
+ function tick(){const e=el()*60;if(Math.floor(e)>sec){sec=Math.floor(e);smp.push(calc(el()).wpm)}live();if(o.limit&&e>=o.limit)finish()}
+ function finish(){if(done)return;done=1;clearInterval(iv);const t=o.limit?o.limit:(Date.now()-st)/1000,s=calc(Math.max(t/60,1/600));inp.disabled=true;inp.blur();if(!smp.length)smp.push(s.wpm);smp.push(s.wpm);o.done&&o.done({wpm:s.wpm,raw:s.raw,acc:s.acc,c:s.c,w:s.w,t:Math.round(t*10)/10,smp})}
+ inp.oninput=()=>{if(done)return;let v=inp.value;if(v.length>T.length){v=v.slice(0,T.length);inp.value=v}
+  if(!st&&v.length){st=Date.now();iv=setInterval(tick,200);o.onStart&&o.onStart()}
+  for(let i=prev;i<v.length;i++){tk++;if(v[i]!==T[i]){er++;snd('bad')}else{snd('key');if(v[i]===' ')snd('word')}}
+  prev=v.length;msg.classList.remove('ready');if(!kb)msg.textContent='';render();live();o.prog&&o.prog(v.length/T.length);if(v.length>=T.length)finish()};
+ render();
+ return{focus:()=>inp.focus(),msg:t=>{msg.textContent=t;msg.classList.add('ready')},stop(){done=1;clearInterval(iv)}}}
+let active=null;
+const stopActive=()=>{if(active&&active.stop)active.stop();active=null;document.body.classList.remove('typing')};
+
+/* ===== Navigation ===== */
+const R={home:rHome,progress:rProg,ach:rAch,academy:rAcad,settings:rSet,games:rGames,test:rTest};
+function go(p){stopActive();$$('.page').forEach(e=>e.classList.toggle('on',e.id==='p-'+p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===p));scrollTo(0,0);R[p]&&R[p]()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){go(b.dataset.go);return}if(e.target.closest('[data-reset]'))resetAll()});
+function resetAll(){if(confirm('Delete all progress on this device? This cannot be undone.')){Store.clear();const th=S.set;S=def();S.set=th;save();toast('Progress reset');go('home')}}
+function rHome(){const L=lvInfo(S.xp);$('#hstats').innerHTML=[[S.res.length,'Tests taken'],[maxW(),'Best WPM'],[lessonsDone()+'/'+LES.length,'Lessons'],[streak(),'Day streak']].map(([v,l])=>sc(v,l)).join('');$('#hlv').textContent='Level '+L.L;$('#hbar').style.width=L.pct+'%';$('#hxp').textContent=S.xp+' XP · '+L.next+' XP to the next level'}
+
+/* ===== Typing test ===== */
+const OPT={time:[['15','15 seconds'],['30','30 seconds'],['60','60 seconds'],['120','120 seconds'],['c','Custom…']],words:[10,25,50,100].map(n=>[n,n+' words']),sent:[1,3,5].map(n=>[n,n+(n>1?' sentences':' sentence')])};
+function cfg(){const m=$('#tm').value;$('#lv').hidden=m==='para';if(m!=='para'){$('#tv').innerHTML=OPT[m].map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('');if(m==='time')$('#tv').value='30'}$('#cw').hidden=!(m==='time'&&$('#tv').value==='c')}
+$('#tm').onchange=cfg;$('#tv').onchange=cfg;
+function rTest(){if(!$('#tv').options.length)cfg();$('#pb').textContent=maxW()?'Personal best: '+maxW()+' WPM':'No personal best yet'}
+$('#start').onclick=()=>{initAudio();stopActive();const m=$('#tm').value,pu=$('#tp').checked,nu=$('#tn').checked,ad=$('#ta').checked;let limit=0,text;const v=$('#tv').value;
+ if(m==='time'){limit=v==='c'?Math.min(600,Math.max(5,+$('#cv').value||30)):+v;text=gen(Math.min(400,Math.max(60,limit*3)),pu,nu,ad)}
+ else if(m==='words')text=gen(+v,pu,nu,ad);
+ else if(m==='sent')text=Array.from({length:+v},()=>pk(SENT)).join(' ');
+ else text=pk(PARA);
+ const p=$('#tpanel');p.hidden=false;p.innerHTML=panelHTML(S.set.kb);$('#tres').innerHTML='';
+ active=Typer(p,{text,limit,done:r=>showRes(r,m,limit)});active.msg('✅ Ready! Start typing. The timer begins with your first key.');
+ $('#start').textContent='Restart test';active.focus();p.scrollIntoView({behavior:'smooth',block:'start'})};
+const sug=r=>{const a=[];if(r.acc<92)a.push('Accuracy is under 92%. Slow down and fix mistakes before chasing speed.');else if(r.acc>=97&&r.wpm<60)a.push('Great accuracy! Now push the pace by about 5 WPM.');if(r.raw-r.wpm>8)a.push('Your raw speed is well above your WPM, so mistakes are costing you speed.');if(r.wpm<30)a.push('Repeat the home-row and upper-row lessons in the academy.');if(r.wpm>=60&&r.acc>=95)a.push('Excellent! Try advanced words or the 120-second test.');a.push('Look at the screen, not the keys, and keep fingers on the home row.');return a};
+function showRes(r,m,limit){const pb=maxW(),first=!S.res.length;if(r.c>=5){S.res.push({d:Date.now(),wpm:r.wpm,raw:r.raw,acc:r.acc,c:r.c,w:r.w,m:m==='time'?limit+'s':m});if(S.res.length>500)S.res.shift();S.tt+=r.t;S.xp+=Math.round(r.wpm/2+r.acc/10);touchDay();save();checkAch()}
+ snd('win');$('#tres').innerHTML=`<div class="card"><h3>Results ${r.wpm>pb&&!first?'🎉 New personal best!':''}</h3><div class="grid">${[[r.wpm,'WPM'],[r.raw,'Raw WPM'],[r.acc+'%','Accuracy'],[r.c,'Correct chars'],[r.w,'Incorrect chars'],[Math.round(r.t)+'s','Time']].map(([v,l])=>sc(v,l)).join('')}</div><p><b>Speed during the test</b></p><canvas id="rc"></canvas><p><b>How to improve</b></p><ul>${sug(r).map(s=>`<li>${s}</li>`).join('')}</ul><button class="btn" onclick="$('#start').click()">Try again</button></div>`;chart($('#rc'),r.smp);$('#tres').scrollIntoView({behavior:'smooth'});rTest()}
+
+/* ===== Academy ===== */
+function rAcad(){$('#lessons').hidden=false;$('#lview').hidden=true;let h='',lv='';LES.forEach((l,i)=>{if(l[0]!==lv){lv=l[0];h+=`<h3>${lv}</h3>`}const d=S.les[i];h+=`<div class="card lv" data-les="${i}" role="button" tabindex="0" style="cursor:pointer"><div><b>${i+1}. ${l[1]}</b><br><small class="mut">${l[2]}</small></div><div>${d?'★'.repeat(d.s)+'☆'.repeat(3-d.s):'Start'}</div></div>`});$('#lessons').innerHTML=h}
+document.addEventListener('click',e=>{const c=e.target.closest('[data-les]');if(c)openLes(+c.dataset.les)});
+$('#lback').onclick=()=>{stopActive();rAcad()};
+function openLes(i){initAudio();stopActive();const l=LES[i];$('#lessons').hidden=true;$('#lview').hidden=false;$('#lres').innerHTML='';$('#lt').textContent=`${i+1}. ${l[1]}`;$('#lo').textContent=l[2];$('#lreq').textContent=`To pass: ${l[4]}% accuracy`+(l[5]?` and ${l[5]}+ WPM`:'');
+ const p=$('#lpanel');p.innerHTML=panelHTML(S.set.kb);scrollTo(0,0);
+ active=Typer(p,{text:l[3](),done:r=>{const ok=r.acc>=l[4]&&r.wpm>=l[5];let h;
+  if(ok){const s=r.acc>=98?3:r.acc>=95?2:1,old=S.les[i],gain=old?5:20+10*s;S.les[i]={s:Math.max(s,old?old.s:0),wpm:Math.max(r.wpm,old?old.wpm:0),acc:Math.max(r.acc,old?old.acc:0)};S.xp+=gain;S.tt+=r.t;touchDay();save();checkAch();snd('win');h=`<h3>Lesson complete! ${'★'.repeat(s)}${'☆'.repeat(3-s)}</h3><p>${r.wpm} WPM · ${r.acc}% accuracy · +${gain} XP</p>`}
+  else{S.tt+=r.t;save();snd('bad');h=`<h3>Not quite yet</h3><p>${r.wpm} WPM · ${r.acc}% accuracy. You need ${l[4]}%`+(l[5]?` and ${l[5]} WPM`:'')+'. Try again slowly.</p>'}
+  $('#lres').innerHTML=`<div class="card">${h}<div class="row2"><button class="btn" onclick="openLes(${i})">${ok?'Practice again':'Try again'}</button>${ok&&i<LES.length-1?`<button class="btn s" onclick="openLes(${i+1})">Next lesson</button>`:''}</div></div>`}});
+ active.msg('✅ Ready! Tap the box and start typing.');active.focus()}
+
+/* ===== Games ===== */
+const GAMES=[['race','🏎️','Typing Race','Race three computer opponents of different speeds.'],['rocket','🚀','Rocket Typing','Blast incoming asteroids by typing their words. Levels get harder.'],['surv','🛡️','Word Survival','Words fall toward you. Build combos and protect your health.'],['chal','⏱️','Typing Challenge','Harder words and sentences with a shrinking timer.']];
+function rGames(){$('#glist').hidden=false;$('#gwrap').hidden=true;$('#glist').innerHTML=GAMES.map(g=>`<div class="card"><div style="font-size:34px">${g[1]}</div><b>${g[2]}</b><p class="mut">${g[3]}</p><small class="mut">Played ${S.g[g[0]].p} · Best ${S.g[g[0]].b||'-'}</small><div style="margin-top:8px"><button class="btn" data-game="${g[0]}">Play</button></div></div>`).join('')}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-game]');if(b)runGame(b.dataset.game)});
+$('#gback').onclick=()=>{stopActive();rGames()};
+function runGame(k){initAudio();stopActive();$('#glist').hidden=true;$('#gwrap').hidden=false;scrollTo(0,0);({race,rocket:()=>falling('rocket'),surv:()=>falling('surv'),chal})[k]()}
+const gv=$('#gview'),INP='autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"';
+function over(k,score,secs,extra){const g=S.g[k];g.p++;const nb=score>(g.b||0);if(nb)g.b=score;S.tt+=secs;const xp=Math.min(80,Math.floor(score/40)+5);S.xp+=xp;touchDay();save();checkAch();snd('win');return `<h3>Game over</h3><p>Score <b>${score}</b> ${nb?'🎉 New best!':'· Best '+g.b}${extra||''}<br>+${xp} XP</p>`}
+function race(){const T=gen(20,true),bots=[['Computer: Rookie',24],['Computer: Turbo',38],['Computer: Bolt',52]].map(b=>[b[0],b[1]*(.9+Math.random()*.2)]),names=['You'].concat(bots.map(b=>b[0]));
+ gv.innerHTML=`<p class="mut">The race starts when you type your first key. Opponents are computer-controlled.</p><div id="lanes">${names.map(n=>`<div class="lane"><span class="nm">${n}</span><div class="track"><span class="car">🚗</span></div></div>`).join('')}</div><div class="card" id="rp"></div><div id="rr"></div>`;
+ const cars=$$('.car',gv),set=(i,p)=>cars[i].style.left=(p*92)+'%';let t0=0,bi;
+ const rp=$('#rp');rp.innerHTML=panelHTML(false);
+ const ty=Typer(rp,{text:T,prog:p=>set(0,p),onStart:()=>{t0=Date.now();bi=setInterval(()=>{const e=(Date.now()-t0)/1000;bots.forEach((b,i)=>set(i+1,Math.min(1,e*b[1]*5/60/T.length)))},100)},done:r=>{clearInterval(bi);
+  const all=[{n:'You',t:r.t}].concat(bots.map(b=>({n:b[0],t:T.length/(b[1]*5)*60}))).sort((a,b)=>a.t-b.t),pl=all.findIndex(a=>a.n==='You')+1,g=S.g.race;g.p++;if(pl===1)g.w++;g.b=Math.max(g.b,r.wpm);const xp=[40,25,15,10][pl-1];S.xp+=xp;S.tt+=r.t;touchDay();save();checkAch();snd(pl===1?'win':'hit');
+  $('#rr').innerHTML=`<div class="card"><h3>${['🥇 1st place!','🥈 2nd place','🥉 3rd place','4th place'][pl-1]}</h3><table>${all.map((a,i)=>`<tr><td>${i+1}</td><td>${a.n}</td><td>${a.t.toFixed(1)}s</td></tr>`).join('')}</table><p>${r.wpm} WPM · ${r.acc}% accuracy · +${xp} XP</p><button class="btn" onclick="runGame('race')">Race again</button></div>`}});
+ active={stop(){ty.stop();clearInterval(bi)}};ty.msg('✅ Ready! Tap the box and start typing.');ty.focus()}
+function falling(k){const rk=k==='rocket';
+ gv.innerHTML=`<div class="hud"><span>Score <b id="gs">0</b></span><span id="gl"></span><span id="gx"></span></div><div class="arena ${rk?'rk':''}" id="ar"><div class="over" id="ov"><h3>${rk?'🚀 Rocket Typing':'🛡️ Word Survival'}</h3><p>${rk?'Type the word on each asteroid to blast it. You have 3 lives.':'Type each word before it hits the bottom. Chain words for a combo bonus.'}</p><button class="btn" id="go">Start</button></div></div><input class="inp" id="gi" placeholder="Type the words here…" ${INP} aria-label="Game typing input">`;
+ const ar=$('#ar'),inp=$('#gi'),ov=$('#ov');focusFx(inp,gv);let ws=[],sc2=0,hp=0,cb=0,kl=0,lv=1,t0=0,last=0,nx=0,raf=0,run=0;
+ const upd=()=>{$('#gs').textContent=sc2;$('#gl').textContent=rk?'❤️'.repeat(Math.max(hp,0)):'Health '+Math.max(hp,0)+'%';$('#gx').textContent=rk?'Level '+lv:'Combo ×'+Math.min(cb+1,5)};
+ const rm=w=>{w.el.remove();ws.splice(ws.indexOf(w),1)};
+ function spawn(){const pool=W.concat(AW).filter(w=>w.length<=3+lv),w=pk(pool),el=document.createElement('div');el.className='fw';el.textContent=w;el.style.left=rnd(Math.max(1,ar.clientWidth-120))+'px';el.style.top='0px';ar.appendChild(el);ws.push({w,el,y:0})}
+ function begin(){ws.forEach(w=>w.el.remove());ws=[];ov.style.display='none';sc2=0;hp=rk?3:100;cb=0;kl=0;lv=1;t0=last=performance.now();nx=t0+500;run=1;upd();inp.value='';inp.focus();raf=requestAnimationFrame(loop)}
+ function loop(now){if(!run)return;const dt=now-last;last=now;const el=(now-t0)/1000;if(!rk)lv=1+Math.floor(el/20);const sp=rk?32+lv*9:28+el*.7,H=ar.clientHeight;
+  if(now>=nx){spawn();nx=now+(rk?Math.max(850,2300-lv*170):Math.max(700,2100-el*18))}
+  for(const w of ws.slice()){w.y+=sp*dt/1000;w.el.style.top=w.y+'px';if(w.y>H-34){rm(w);cb=0;snd('hit');hp-=rk?1:25;upd();if(hp<=0)return end()}}
+  raf=requestAnimationFrame(loop)}
+ function end(){run=0;cancelAnimationFrame(raf);inp.blur();if(rk)S.g.rocket.lv=Math.max(S.g.rocket.lv,lv);ov.style.display='flex';ov.innerHTML=over(k,sc2,Math.round((performance.now()-t0)/1000),rk?`<br>Reached level ${lv}`:`<br>Survived ${Math.round((performance.now()-t0)/1000)}s`)+'<button class="btn" id="again">Play again</button>';$('#again').onclick=begin}
+ function kill(w){const b=document.createElement('div');b.className='fw';b.textContent='💥';b.style.cssText=`left:${w.el.style.left};top:${w.y}px;border:0;background:none;font-size:26px`;ar.appendChild(b);setTimeout(()=>b.remove(),300);rm(w);sc2+=w.w.length*10*(rk?1:Math.min(cb+1,5));cb++;kl++;if(rk&&kl%8===0){lv++;S.g.rocket.lv=Math.max(S.g.rocket.lv,lv);save();checkAch();snd('win')}upd()}
+ inp.oninput=()=>{if(!run)return;const raw=inp.value,v=raw.trim().toLowerCase();snd('key');const h=v&&ws.find(w=>w.w===v);
+  if(h){kill(h);inp.value='';snd('word')}else if(/\s$/.test(raw)){inp.value='';if(v){cb=0;snd('bad');upd()}}
+  ws.forEach(w=>w.el.classList.toggle('pm',!!v&&w.w.startsWith(v)));inp.classList.toggle('err',!!v&&!ws.some(w=>w.w.startsWith(v)))};
+ $('#go').onclick=begin;active={stop(){run=0;cancelAnimationFrame(raf)}};upd()}
+function chal(){
+ gv.innerHTML=`<div class="hud"><span>Round <b id="cr">1</b></span><span>Score <b id="cs">0</b></span></div><div class="arena" id="ar" style="touch-action:auto"><div style="padding:16px"><div class="bar"><i id="cb" style="width:100%;transition:none"></i></div><div class="txt" id="cp" style="height:auto;min-height:3.6em;margin-top:10px;overflow:visible"></div></div><div class="over" id="ov"><h3>⏱️ Typing Challenge</h3><p>Type each prompt before the bar runs out. Prompts get longer and the timer gets tighter.</p><button class="btn" id="go">Start</button></div></div><input class="inp" id="ci" placeholder="Type the prompt here…" ${INP} aria-label="Challenge typing input">`;
+ const inp=$('#ci'),ov=$('#ov'),cp=$('#cp');focusFx(inp,gv);let n=1,sc2=0,pr='',tl=1,t1=0,t0=0,raf=0,run=0;
+ const prompt=n=>n<=4?pk(W.filter(w=>w.length>=3&&w.length<=5)):n<=8?pk(AW):n<=12?[0,1,2].map(()=>pk(W.filter(w=>w.length>3))).join(' '):pk(SENT);
+ function paint(v){[...cp.children].forEach((s,i)=>{const c=i<v.length?(v[i]===pr[i]?'ok':'bad'):i===v.length?'cur':'';if(s.className!==c)s.className=c})}
+ function next(){pr=prompt(n);tl=pr.length/Math.min(5,2+.25*n)+2;t1=performance.now();$('#cr').textContent=n;$('#cs').textContent=sc2;cp.innerHTML=[...pr].map(c=>`<span>${esc(c)}</span>`).join('');inp.value='';paint('')}
+ function loop(now){if(!run)return;const left=tl-(now-t1)/1000;$('#cb').style.width=Math.max(0,left/tl*100)+'%';if(left<=0)return end();raf=requestAnimationFrame(loop)}
+ function end(){run=0;cancelAnimationFrame(raf);inp.blur();ov.style.display='flex';ov.innerHTML=over('chal',sc2,Math.round((performance.now()-t0)/1000),`<br>Reached round ${n}`)+'<button class="btn" id="again">Play again</button>';$('#again').onclick=begin}
+ function begin(){ov.style.display='none';n=1;sc2=0;t0=performance.now();run=1;next();inp.focus();raf=requestAnimationFrame(loop)}
+ inp.oninput=()=>{if(!run)return;const v=inp.value;paint(v);if(v.length&&v[v.length-1]!==pr[v.length-1])snd('bad');else snd('key');
+  if(v===pr){sc2+=pr.length*10+Math.ceil(Math.max(0,tl-(performance.now()-t1)/1000)*5);n++;snd('word');next()}};
+ $('#go').onclick=begin;active={stop(){run=0;cancelAnimationFrame(raf)}}}
+
+/* ===== Progress, achievements, settings ===== */
+function rProg(){const Rs=S.res,avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0;
+ $('#pstats').innerHTML=[[fmt(S.tt),'Typing time'],[avg(Rs.map(r=>r.wpm)),'Average WPM'],[maxW(),'Highest WPM'],[avg(Rs.map(r=>r.acc))+'%','Average accuracy'],[lessonsDone(),'Lessons completed'],[games(),'Games played'],[S.xp,'XP earned'],[lvlOf(S.xp),'Level']].map(([v,l])=>sc(v,l)).join('');
+ chart($('#pch'),Rs.slice(-30).map(r=>r.wpm));
+ $('#phist').innerHTML=Rs.slice(-10).reverse().map(r=>`<tr><td>${new Date(r.d).toLocaleDateString()}</td><td>${r.wpm} WPM</td><td>${r.acc}%</td><td>${r.m}</td></tr>`).join('')||'<tr><td>No tests yet. Take your first test!</td></tr>'}
+function rAch(){const L=lvInfo(S.xp);$('#alist').innerHTML=`<div class="card"><b>Level ${L.L}</b> · ${S.xp} XP<div class="bar"><i style="width:${L.pct}%"></i></div></div>`+ACH.map(a=>{const p=Math.min(1,a[4]()),u=S.ach[a[0]];return `<div class="card"><b>${u?'🏆':'🔒'} ${a[1]}</b> <small class="mut">+${a[3]} XP</small><br><small class="mut">${a[2]}</small><div class="bar"><i style="width:${Math.round(p*100)}%"></i></div></div>`}).join('')}
+function rSet(){$('#sth').value=S.set.theme;$('#ssn').value=S.set.snd;$('#svo').value=S.set.vol;$('#skb').checked=S.set.kb}
+$('#sth').onchange=e=>{S.set.theme=e.target.value;document.documentElement.dataset.theme=S.set.theme;save()};
+$('#ssn').onchange=e=>{S.set.snd=e.target.value;save();initAudio();[0,120,240].forEach(t=>setTimeout(()=>snd('key'),t))};
+$('#svo').oninput=e=>{S.set.vol=+e.target.value;save()};
+$('#sprev').onclick=()=>{initAudio();[0,110,220,330].forEach(t=>setTimeout(()=>snd('key'),t));setTimeout(()=>snd('word'),450);setTimeout(()=>snd('bad'),650)};
+$('#skb').onchange=e=>{S.set.kb=e.target.checked;save()};
+cfg();rHome();
+</script>
+</body>
+</html>
